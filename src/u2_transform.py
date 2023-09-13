@@ -4,19 +4,7 @@ import re
 class DataProcessor:
     
     def standardize_numbers(self, df):
-        """
-        This method standardizes phone numbers in a dataset.
-        
-            Parameters:
-                df -> A Pandas DataFrame containing columns "phone_number" and "country_code".
-
-            Returns:
-                df -> A Pandas DataFrame with phone numbers standardized.
-        
-        """
-        # Define country codes and their respective prefixes
         country_codes = {"GB": "+44", "DE": "+49", "US": "+1"}
-        # Iterate over each row in the dataset
         for index, row in df.iterrows():
             phone_number = row["phone_number"]
             country_code = row["country_code"]
@@ -30,17 +18,6 @@ class DataProcessor:
         return df
 
     def clean_users(self, df):
-        """
-        This method cleans user data by removing null values and duplicates, replacing and removing
-        incorrectly typed values, and standardizing phone numbers and dates.
-
-            Parameters:
-                df -> A Pandas DataFrame containing user data.
-
-            Returns:
-                df -> A Pandas DataFrame with cleaned user data.
-        
-        """
         df = df.dropna()
         df = df.drop_duplicates()
         # Filter and standardize country codes
@@ -54,17 +31,6 @@ class DataProcessor:
         return df
     
     def clean_cards(self, df):
-        """
-        This method cleans the given DataFrame by removing null values, duplicates, and incorrectly typed
-        values, standardizing payment dates, and resetting the index.
-
-            Parameters:
-                df -> A Pandas DataFrame containing card data.
-
-            Returns:
-                df -> A Pandas DataFrame with cleaned card data.
-        
-        """
         df = df.dropna()
         df = df.drop_duplicates()
         df = df[df["card_provider"].str.contains("VISA 16 digit|JCB 16 digit|VISA 13 digit|JCB 15 digit|VISA 19 digit|Diners Club / Carte Blanche|American Express|Maestro|Discover|Mastercard")]
@@ -73,17 +39,6 @@ class DataProcessor:
         return df
     
     def clean_stores(self, df):
-        """
-        This method cleans the store data by removing null values and duplicates, removing and replacing
-        incorrectly typed values, standardizing opening dates, and resetting the index.
-
-            Parameters:
-                df -> A Pandas DataFrame containing store data.
-
-            Returns:
-                df -> A Pandas DataFrame with cleaned store data.
-        
-        """
         df = df.drop("lat", axis = 1)
         df = df.dropna()
         df = df.drop_duplicates()
@@ -96,16 +51,6 @@ class DataProcessor:
         return df
     
     def convert_weights(self, df):
-        """
-        This method converts product weights in various units to a standard numeric representation in Kg.
-
-            Parameters:
-                df -> A Pandas DataFrame containing a column "weight" with string representations of weights.
-
-            Returns:
-                df -> A Pandas DataFrame with the "weight" column converted to floats in Kg.
-        
-        """
         # Create an empty column for the weight unit
         df["unit"] = pd.NA
         # Loop through the rows of the dataset
@@ -140,17 +85,6 @@ class DataProcessor:
         return df
     
     def clean_products(self, df):
-        """
-        This method cleans the product data by removing null values and duplicates, dropping unnecessary
-        columns, adding an index column, renaming the index column, and standardizing opening dates.
-
-            Parameters:
-                df -> A Pandas DataFrame containing product data.
-
-            Returns:
-                df -> A Pandas DataFrame with cleaned product data.
-
-        """
         df = df.dropna()
         df = df.drop_duplicates()
         df = df.drop(columns = ["unit"])
@@ -161,31 +95,11 @@ class DataProcessor:
         return df
     
     def clean_orders(self, df):
-        """
-        This method cleans orders data by dropping unnecessary columns.
-
-            Parameters:
-                df -> A Pandas DataFrame containing orders data.
-
-            Returns:
-                df -> A Pandas DataFrame with cleaned orders data.
-
-        """
         column_names = ["first_name", "last_name", "1", "level_0", "index"]
         df = df.drop(columns = column_names)
         return df
     
     def clean_events(self, df):
-        """
-        This method cleans the events data by removing null values, duplicates, and incorrectly typed values.
-
-            Parameters:
-                df -> A Pandas DataFrame containing the events data to be cleaned.
-
-            Returns:
-                df -> A Pandas DataFrame containing the cleaned events data.
-        
-        """
         df = df.dropna()
         df = df.drop_duplicates()
         df = df[df["time_period"].str.contains("Midday|Late_Hours|Evening|Morning")]
