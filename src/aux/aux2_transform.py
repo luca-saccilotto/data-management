@@ -13,7 +13,7 @@ class DataProcessor:
             # Add the prefix if it is not already present
             if not phone_number.startswith(country_codes[country_code]):
                 phone_number = country_codes[country_code] + phone_number
-            # Update the phone number in the DataFrame
+            # Update the phone number
             df.at[index, "phone_number"] = phone_number
         return df
 
